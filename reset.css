@@ -1,0 +1,19 @@
+/* alap beallitasok, margin-ok es padding-ok nullazasa */
+html, body, form, input, select, fieldset {font-size: 11px; font-family: Tahoma, Verdana, Arial; color: #000000; }
+body {background-color: #242424; }
+/* heading es egyeb formazasok, melyek mas alapertelmezett margokkal birnak az egyes bongeszokben */
+html, body, form, fieldset, h1, h2, h3, h4, h5, h6, p, pre, blockquote, ul, ol, li, dl, address {margin: 0px; padding: 0px; }
+/* alapertelmezett betumeret ezeknel az elemeknel */
+h1, h2, h3, h4, h5, h6, pre, code {font-size: 10px; }
+ul, ol {list-style: none; }
+/* a linkek kez alakot kapjanak mindenhol */
+form label {cursor: pointer; }
+address {font-style: normal; }
+/* a linkek alapertelmezett alahuzasat szunteti meg */
+:link,:visited { text-decoration: none; }
+/* linkelt kepek keretezesenek megszuntetese */
+a img,:link img,:visited img {border: none; }
+/* a bordert nullazzuk fieldset eseteben */
+fieldset {border: none; }
+/* float-olt elemek utan hasznalatos clear */
+div.clear, span.clear {clear: both; font-size: 0px; }
