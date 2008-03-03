@@ -1,0 +1,45 @@
+<html>
+<head>
+<style>
+.vmi1 {
+background-color: #fa0;
+width: 200px;
+height: 100px;
+}
+</style>
+</head>
+<body onload="fade_all();" bgcolor="#c0c0c0">
+<SCRIPT LANGUAGE="JavaScript" src="darth_fader-1.10.js"></SCRIPT>
+
+<div class="vmi1" onclick="fade('fade0', 'black', 'null', 0, 30, 3000);"><b>Toggle szöveg 000...</b></div>
+
+<div class="vmi1" id="fade0"><b>Valami szöveg 000...</b></div>
+<div class="vmi1 dfader"><b>Valami szöveg 0000...</b></div>
+
+
+<div style="background-color: #fff; width: 200px; cursor: pointer;" onclick="fade_all();"><b>Teszt...</b></div>
+
+
+<div style="background-color: #fff; width: 200px; cursor: pointer;" onclick="fade_all('p');"><b>Teszt2...(p)</b></div>
+
+<h1 class="dfader">This will fade with the default settings</h1>
+<p class="dfader-null-navy-0-30-3000">This will fade with custom colors</p>
+<p style="background-color: #0ff; width: 200px; cursor: pointer;" class="dfader-ffa-null">This is the same as above</p>
+<div class="myclass dfader-green-null-1-50-5000">You can use other classes as well with dfader...</div>
+<h2 class="header2 dfader-ff5-null-0-60 center">You can use other classes as well with dfader...</h2><br>
+
+<div style="background-color: #f00; width: 200px; cursor: pointer;" onclick="fade('fade1', 'ffa', 'navy', 0, 30, 3000);"><b>Toggle szöveg ój11111...</b></div>
+<div style="background-color: #00f; width: 200px; cursor: pointer;" onclick="fade('fade2', null, 'ffffff', 1, 20);"><b>Toggle szöveg ój22222...</b></div>
+<div style="background-color: #0f0; width: 200px; cursor: pointer;" onclick="fade('fade3', 'white', 'c0c0c0', 0, 30, 3000);"><b>Toggle szöveg ój33333...</b></div>
+<div style="background-color: #f0f; width: 200px; cursor: pointer;" onclick="fade('fade4', 'null', 'af3', 0, 30, 3000);"><b>Toggle szöveg ój44444...</b></div>
+<div style="background-color: #fa0; width: 200px; cursor: pointer;" onclick="fade('fade5', 'black', 'null', 0, 30, 3000);"><b>Toggle szöveg ój55555...</b></div>
+<br>
+<div style="background-color: #f00; width: 200px; height: 100px;" id="fade1"><b>Valami szöveg ój11111...</b></div>
+<div style="background-color: #00f; width: 200px; height: 100px;" id="fade2"><b>Valami szöveg ój22222...</b></div>
+<div style="background-color: #0f0; width: 200px; height: 100px;" id="fade3"><b class="dfader-navy-null-0-10-3000">Valami szöveg ój33333...</b></div>
+<div style="background-color: #f0f; width: 200px; height: 100px;" id="fade4"><p class="alma dfader">Valami szöveg ój44444...</p></div>
+<div style="background-color: #fa0; width: 200px; height: 100px;" id="fade5"><p class="dfader-white-c0c0c0-0 fa">Valami szöveg ój55555...</p></div>
+
+
+</body>
+</html>
