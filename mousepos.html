@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <style>
+      html, body {
+        background-color: #000000;
+        color: #d0d0d0;
+        font-family: Arial, Tahoma, serif;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      #container {
+        margin: 0 auto;
+        padding: 0;
+        text-align: center;
+        width: 980px;
+      }
+
+      .room {
+        height: 200px;
+      }
+
+      #clickable0 {
+        border: 1px solid blue;
+      }
+
+      #clickable1 {
+        border: 1px solid darkorange;
+      }
+
+      #clickable2 {
+        border: 1px solid green;
+      }
+    </style>
+
+    <script type="text/javascript">
+
+      function debugxy(x, y)
+      {
+        if(o == false) { return false; }
+
+        var r = 10;
+        var n = "";
+
+        c = o.innerHTML.split("&nbsp;", r);
+        for(i = 0; i < c.length - 1; i++) n += c[i] + "&nbsp;";
+        o.innerHTML = "X: " + x + " Y: " + y + "&nbsp;<br/>" + n;
+
+        return true;
+      }
+/*
+//get mouse position
+      if(!document.all) document.captureEvents(Event.MOUSEMOVE)
+      document.onmousemove = getMouseXY;
+
+      function getMouseXY(e) {
+        if (!e) var e = window.event;
+        var mouseX = 0;
+        var mouseY = 0;
+        if(document.all) {
+          mouseX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+          mouseY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+        else {
+          mouseX = e.pageX;
+          mouseY = e.pageY;
+        }
+
+        debugxy("clickable", mouseX, mouseY);//debug
+
+        return false;
+      }
+*/
+
+
+      var o = false;
+
+      function showMouseXY(e)
+      {
+        if(typeof e == "undefined")
+        {
+          e = window.event;
+          var x = e.offsetX;
+          var y = e.offsetY;
+        }
+        else
+        {
+          var x = e.clientX - o.offsetLeft;
+          var y = e.clientY - o.offsetTop;
+        }
+
+        debugxy(x, y);//debug
+      }
+
+      function set_o(obj) { o = obj; }
+
+      if(!document.all) document.captureEvents(Event.MOUSEMOVE)
+      document.onmousemove = showMouseXY;
+
+    </script>
+  </head>
+  <body>
+    <div id="container">
+
+
+      <div id="clickable0" class="room" onmouseover="set_o(this)"> </div>
+      <div id="clickable1" class="room" onmouseover="set_o(this)"> </div>
+      <div id="clickable2" class="room" onmouseover="set_o(this)"> </div>
+
+
+    </div>
+  </body>
+</html>
