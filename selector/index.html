@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <style>
+      html, body {
+        background-color: #000000;
+        color: #d0d0d0;
+        font-family: Arial, Tahoma, serif;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      #container {
+        margin: 0 auto;
+        padding: 0;
+        text-align: center;
+        width: 980px;
+      }
+
+      .room {
+        margin: 0 auto 0 auto;
+        text-align: center;
+        height: 200px;
+        width: 800px;
+      }
+
+      #clickable0 {
+        border: 1px solid blue;
+        background-image: url(https://i.imgur.com/r6iCIZY.png);
+        background-position: -200px 800px;
+      }
+      #clickable0sel-effect {
+        background-color: #bfbfbf;
+      }
+
+      #clickable1 {
+        text-align: left;
+
+        border: 1px solid darkorange;
+      }
+      #clickable1sel-effect {
+        background-color: #1fc8db;
+        background-image: linear-gradient(140deg, #EADEDB 0%, #BC70A4 50%, #BFD641 75%);
+      }
+
+      #clickable2 {
+        border: 1px solid green;
+        background-image: url(https://i.imgur.com/x6lAtVa.png);
+        background-position: 0 0;
+      }
+      #clickable2sel-effect {
+        background-color: #aa4f00;
+      }
+    </style>
+
+    <script type="text/javascript" src="mousexy_delta.js"></script>
+    <script type="text/javascript" src="tooltip.js"></script>
+  </head>
+  <body>
+    <div id="container">
+
+      <div id="clickable0" class="room" onmouseover="set_o(this)"> </div>
+      <div id="clickable1" class="room" onmouseover="set_o(this)"> </div>
+      <div id="clickable2" class="room" onmouseover="set_o(this)"> </div>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+html, body, form, fieldset, h1, h2, h3, h4, h5, h6, p, pre, blockquote, ul, ol, li, dl, address {margin: 0px; padding: 0px;}
+
+html, body {
+background-color: #000000;
+color: #d0d0d0;
+font-family: Arial, Tahoma, serif;
+font-size: 12px;
+margin: 0;
+padding: 0;
+text-align: center;
+}
+
+a:link {
+color: #d0d0d0;
+text-decoration: none;
+}
+
+a:visited {
+color: #d0d0d0;
+text-decoration: none;
+}
+
+a:hover {
+color: #d0d0d0;
+text-decoration: underline;
+}
+
+#container {
+
+margin: 0 auto;
+padding: 0;
+text-align: center;
+
+width: 980px;
+
+}
+
+.str {
+margin-left: 0;
+width: 23px;
+height: 23px;
+background-image: url("rating.gif");
+background-position: center left;
+background-repeat: no-repeat;
+}
+
+/*
+.str:hover {
+background-image: url("rating-p.gif");
+}
+*/
+
+
+#star2 {
+margin-left: 23px;
+}
+#star3 {
+margin-left: 23px;
+}
+
+#star1:hover {
+background-image: url("rating-p.gif");
+}
+#star2:hover {
+background-image: url("rating-p.gif");
+}
+#star3:hover {
+background-image: url("rating-p.gif");
+}
+
+
+
+#stary {
+margin-left: 23px;
+}
+#starz {
+margin-left: 23px;
+}
+/*
+#starx:hover {
+background-image: url("rating-p.gif");
+}
+#stary:hover {
+background-image: url("rating-p.gif");
+}
+#starz:hover {
+background-image: url("rating-p.gif");
+}
+*/
+
+
+.strimg {
+margin: 0;
+padding: 0;
+border: none;
+}
