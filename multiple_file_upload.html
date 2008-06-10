@@ -1,0 +1,50 @@
+  <script type="text/javascript">
+  var arrInput = new Array(0);
+  var arrInputValue = new Array(0);
+
+  function addInput() {
+    arrInput.push(arrInput.length);
+    arrInputValue.push("");
+    document.getElementById('submit_sss').style.display = "";
+    display();
+  }
+
+  function display() {
+    document.getElementById('screenshots_upload').innerHTML="";
+    for (intI=0;intI< arrInput.length;intI++) {
+      document.getElementById('screenshots_upload').innerHTML+=createInput(arrInput[intI], arrInputValue[intI]);
+    }
+  }
+
+  function saveValue(intId,strValue) {
+    arrInputValue[intId]=strValue;
+  }
+
+  function createInput(id,value) {
+    return id +" <input name='titles[]' type='text' id='title_"+ id +"' onchange='saveValue("+ id +", this.value)' value='"+ value +"'/><input name='screenshots[]' type='file' id='screenshot_"+ id +"'/><br/>";
+  }
+
+  function deleteInput() {
+    if (arrInput.length > 0) {
+      arrInput.pop();
+      if(arrInput.length == 0) document.getElementById('submit_sss').style.display = "none";
+    }
+    display();
+  }
+  </script>
+
+  <form method="post" action="handler.php" enctype="multipart/form-data">
+
+      <h3>Kép feltöltése <a href="javascript:addInput()">+</a> / <a href="javascript:deleteInput()">-</a></h3>
+      <span id="submit_sss" style="display: none">
+        <br/>
+        Kép címe -<span style="width: 1px; padding: 0 55px"> &nbsp; </span>- Fájl
+
+        <p id="screenshots_upload">
+
+        </p>
+
+        <input type="submit" name="submit_sss" value="Mehet"/>
+      </span>
+
+  </form>
