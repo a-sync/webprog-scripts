@@ -1,0 +1,165 @@
+
+/* global */
+html, body {
+  background-color: #232323;
+  color: #eeeeee;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  text-align: center;
+  font-family: "Arial", "Tahoma", "Serif";
+}
+
+/* main content */
+#container {
+  margin: 0 auto;
+  padding: 9px 0 0 0;
+  text-align: center;
+  width: 640px;
+  background-image: url("border.png");
+  background-repeat: repeat-x;
+  background-position: top center;
+}
+
+/* footer */
+#footer {
+  width: 640px;
+  background-image: url("border.png");
+  background-repeat: repeat-x;
+  background-position: top left;
+  color: #a7a7a7;
+  text-align: center;
+  margin: 1px auto 0 auto;
+  padding: 40px 0 12px 0;
+}
+
+#foot-border {
+  height: 8px;
+  width: 120px;
+  margin: 0 auto;
+  padding: 0;
+  background-image: url("border.png");
+  background-repeat: repeat-x;
+  background-position: center center;
+}
+
+/* interface */
+#tabla {
+  width: 640px;
+  height: 300px;
+  min-height: 200px;
+  background-color: #000000;
+  color: #eeeeee;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  font-family: "Lucida Console", "Monospace", "Serif";
+  line-height: 12px;
+  border: none;
+  margin: 0 auto;
+  padding: 0;
+  overflow: hidden;
+  cursor: default;
+  /*white-space: nowrap;
+  white-space: pre;*/
+}
+
+#statusz {
+  width: 118px;
+  height: 15px;
+  background-color: #000000;
+  color: #eeeeee;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  border: none;
+  margin: -1px 1px 0 1px;
+  padding: 3px 4px 0 4px;
+  cursor: default;
+}
+
+#utkozesek {
+  width: 118px;
+  height: 15px;
+  background-color: #000000;
+  color: #eeeeee;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  border: none;
+  margin: -1px 1px 0 1px;
+  padding: 3px 4px 0 4px;
+  cursor: default;
+}
+
+#ciklus_ido {
+  width: 118px;
+  height: 15px;
+  background-color: #000000;
+  color: #eeeeee;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  border: none;
+  margin: -1px 1px 0 1px;
+  padding: 3px 4px 0 4px;
+  cursor: default;
+}
+
+#ciklus_szam {
+  width: 118px;
+  height: 15px;
+  background-color: #000000;
+  color: #eeeeee;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  border: none;
+  margin: -1px 1px 0 1px;
+  padding: 3px 4px 0 4px;
+  cursor: default;
+}
+
+#maximum_csillag {
+  width: 118px;
+  height: 15px;
+  background-color: #000000;
+  color: #eeeeee;
+  font-size: 12px;
+  text-align: left;
+  font-weight: bold;
+  border: none;
+  margin: -1px 1px 0 1px;
+  padding: 3px 4px 0 4px;
+  cursor: default;
+}
+
+/* színek */
+.feher {
+  color: white;
+}
+
+.piros {
+  color: darkred;
+}
+
+.kek {
+  color: darkblue;
+}
+
+.zold {
+  color: darkgreen;
+}
+
+.sarga {
+  color: orange;
+}
+
+.szurke {
+  color: darkgray;
+}
+
+/* "Vitorlázz némán át a réteken,
+    Túl a sóson túl az édesen,
+    Annyira kemény, annyira látványos,
+    Csatáink voltak, hát hogy lesz most..." */

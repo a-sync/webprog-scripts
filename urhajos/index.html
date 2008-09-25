@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+
+    <title>Űrhajós</title>
+
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2" />
+
+    <script type="text/javascript" src="urhajos.js"></script>
+    <script type="text/javascript" src="palya1.js"></script>
+
+
+  </head>
+  <body onload="statusz_valtas();">
+  
+    <input type="text" id="statusz" readonly/><input type="text" id="utkozesek" readonly/><input type="text" id="ciklus_ido" readonly/><input type="text" id="ciklus_szam" readonly/><input type="text" id="maximum_csillag" readonly/>
+    <div id="container">
+
+      <pre id="tabla">
+      <br/><center>Játék betöltése...</center>
+      </pre>
+
+    </div>
+
+    <div id="footer">
+      Enter a játék indításához / megállításához.
+      <br/>
+      Billentyűzeten 1-9 a csillagok számának állításához. (szám * sorok számának 5%-a)
+      <br/>
+      Numpad + / - gomb a ciklus idő állításához.
+      <br/>
+      <br/>
+      (további beállítások az urhajos.js fájlban plussz némi dokumentáció a kódba kommentelve)
+      <br/>
+      <br/>
+      vec
+      <br/>
+      <div id="foot-border"></div>
+    </div>
+
+
+  </body>
+</html>
