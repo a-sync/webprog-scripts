@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2" />
+	
+	<title>tooltip (diagamma)</title>
+<style>
+<!--
+/*css*/
+body {
+  backgroun-color: lavender;
+  font-size: 18px;
+}
+
+.teszt1 {
+  color: darkred;
+  cursor: help;
+}
+
+#tipbox {
+  font-size: 14px;
+  font-face: Arial, Verdana, serif;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+//néhány beállítás
+var tipID = 'tipbox';//a doboz ID-je
+var tipBox = false;//a doboz objektum
+var tipBoxCSS = 'visibility: hidden; position: absolute; width: 250px; z-index: 314; padding: 4px; background-color: #fff0cc; border: 1px solid gray;';//ha van belőve css előre akkor legyen false
+var tipFollow = true;//az objektumon mozgatva, kövesse-e a tooltip az egeret
+
+var tipOnload = true;//oldalbetöltéskor keresse meg a beálított atribútumú elemeket és rendelje a megfelelő eventet hozzá
+var tipAttr = 'tip';//milyen attribútumba van rakva a szöveg
+var tipTags = false;//adott tageket nézzen meg tipAttr attributumot keresve (false/* mind)
+
+
+//inicializálás indítása onload-ra
+if(tipOnload)
+{
+  if(window.attachEvent) window.attachEvent('onload', tip_init);
+  else window.addEventListener('load', tip_init, false);
+}
+
+//inicializálás, beállított attributumnak megfelelően rendelje hozzá az eventeket
+function tip_init(e)
+{
+  if(!tipTags) var tipTags = '*';
+  var elements = document.getElementsByTagName(tipTags);
+
+  var i;
+  for(i in elements)
+  {
+    var elem = elements[i];
+    if(elem.attributes && elem.attributes[tipAttr])//ha szerepel benne a tip attributum
+    {
+      //alert(elem.attributes[tipAttr].value);
+      //if(elem.attachEvent) elem.attachEvent('onclick', dbg_e);
+      
+      if(elem.attachEvent) elem.attachEvent('onmouseover', tip);
+      else elem.addEventListener('mouseover',  tip, false);
+      //if(elem.attachEvent) elem.attachEvent('onmouseover', function () { tip(this, false, false); });
+      //else elem.addEventListener('mouseover',  function () { tip(this, false, false); }, false);
+    }
+  }
+}
+
+
+//föléhúzásra doboz megjelenítése (tip_box), pozíció követése (tip_pos), és kihúzásra event, doboz eltüntetése
+function tip(event, text, close)
+{
+  var elem = event.currentTarget || event.srcElement;
+  //alert('testdbg5: '+text);
+  //if(!text && elem.attributes && elem.attributes[tipAttr])
+
+  if(!text && !close && elem.attributes && elem.attributes[tipAttr])
+  {
+    //alert('dbg4');//dbg
+    var text = elem.attributes[tipAttr].value;
+  }
+
+  //if(text === true && elem.attributes && elem.attributes[tipAttr]) var text = elem.attributes[tipAttr].value;
+  //else if(text === true) var text = false;
+
+  //if(text == false) tip_box(false); //onmouseout
+  if(close == true) tip_box(false); //onmouseout
+  else //onmouseover
+  {
+    if(elem.attachEvent)
+    {
+      if(tipFollow == true) elem.attachEvent('onmousemove', tip_pos);
+      elem.attachEvent('onmouseout', function () { tip(event, true, true); });
+    }
+    else
+    {
+      if(tipFollow == true) elem.addEventListener('mousemove', tip_pos, false);
+      elem.addEventListener('mouseout', function () { tip(event, true, true); }, false);
+    }
+
+    tip_pos(e);
+    tip_box(text);//ha máshonnan kel szedni a szöveget akkor itt a helye
+  }
+}
+
+//doboz létrehozása, megjelenítése, eltüntetése a kapott tartalommal
+function tip_box(text)
+{
+  if(tipBox == false) //ha nincsen belőve a doboz, akkor inicializálni
+  {
+    tipBox = document.getElementById(tipID);
+    if(!tipBox)
+    {
+      tipBox = document.createElement('div');
+      tipBox.setAttribute('id', tipID);
+
+      if(tipBoxCSS)
+      {
+        tipBox.setAttribute('style', tipBoxCSS);
+        tipBox.style.cssText = tipBoxCSS;//ie fix
+      }
+
+      document.body.insertBefore(tipBox, null);//nem tolja el a DOM fát
+
+      tipBox = document.getElementById(tipID);
+    }
+  }
+
+  if(text == false)
+  {
+    tipBox.style.visibility = 'hidden';
+    //tipBox.innerHTML = '';//tartalom ürítése
+  }
+  else
+  {
+    tipBox.style.visibility = 'visible';
+    tipBox.innerHTML = text;//########## todo: adatszűrés! ##########
+  }
+}
+
+//doboz pozíciójának frissítése az egér pozíciója alapján
+function tip_pos(event)
+{
+  if(tipBox == false) tip_box(false);
+
+  var mPos = mouSeXY(event);
+  var o = event.currentTarget || event.srcElement;//dbg
+
+  tipBox.style.left = (mPos[0] + 8) + 'px';
+  tipBox.style.top = (mPos[1] + 8) + 'px';
+
+  //dbg([mPos[0], mPos[1], o]);//dbg
+}
+
+/* egér x és y koordinátája az oldalon */
+function mouSeXY(event)
+{
+  var mX = 0;
+	var mY = 0;
+
+  var e = (!event) ? window.event : event;
+  //var elem = e.currentTarget || e.srcElement;
+
+  if(e.pageX || e.pageY)
+  {
+    mX = e.pageX;
+    mY = e.pageY;
+  }
+  else if(e.clientX || e.clientY)
+  {
+    mX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+    mY = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+  }
+
+  return [mX, mY];
+  //return [mX, mY, elem];
+}
+
+
+/*
+function dbg(pos) {
+  //alert('x: '+pos[0]+', y: '+pos[1]);
+  
+  var de = document.getElementById('dbg');
+  de.innerHTML = 'X: '+pos[0]+', Y: '+pos[1]+', origin: '+pos[2].id;
+}
+*/
+function dbg_e(e)
+{
+  //var e = e.currentTarget || e.srcElement;
+  var i;
+  var d = '';
+  for(i in e) {
+    var n = '';
+    //if(e[i] != false && e[i] != null)
+    //{
+    //  for(j in e[i]) {
+    //    n += 'i-'+i+'.j-'+j+': '+e[i][j]+', ';
+    //  }
+    //}
+    //else n = 'i-'+i+': '+e[i];
+    n = 'i-'+i+': '+e[i];
+    
+    d += n+', ';
+  }
+  alert(d);
+}
+
+//todo: a tooltip magasságát bekérni és az alapján meg az oldal méretei alapján eltolni ha valahol kilógna
+//todo: settimouttal idoztetése az eltüntetésnek
+//-->
+</script>
+</head>
+<body>
+<p>
+<!--<img style="cursor: help" onmouseover="tip(event, 'Lusta voltam kisebb képet keresni :)')" src="downloadarrow_new2.jpg" width="20" height="20"/>-->
+<img tip="Lusta voltam kisebb képet keresni :)" src="downloadarrow_new2.jpg" width="20" height="20"/>
+ &lt;-- ez is tooltipes :D
+ <br/>
+&#x03dc; digamma verzio &#x03dd;
+</p>
+
+<p>
+hai, ez itt a teszt szövege a <span class="teszt1" tip="ide gyakorlatilag akármilyen html kerülhet (persze megfelelően szűrve)<br/>ezzel is elősegítendő a tooltipek tagolását...<br/><br/>a kód működik ie6/ie7/ie8, ff2/ff3, opera9, safari és chrome böngészőkben<br/>a doboz css-ének átírásával még lehet rajta szépíteni :)">tooltip</span> scriptnek...
+</p>
+
+<p>
+a tippek hozzáadása gyerekjáték mivel csak egy új attribútumot kell a <b class="teszt1" tip="beállítható, alapból: tip">kívánt</b> html tagekhez adni <i class="teszt1" tip="gyakorlatilag csak ennyi: tip='valami tipp szöveg'">(mindegy melyikhez)</i>, és a program betöltéskor végignézi az oldal elemeit, majd hozzárendeli a megfelelő kódokat...
+</p>
+<br/>
+direkt meghívásként is beszúrható a kód <span class="teszt1" onmouseover="tip(event, 'persze valamelyik html tagbe...')">beszúrandó kód</span>: onmouseover="tip(event, 'tooltip szövege')"
+<!--<p onclick="tip(event, 'p tagnel cucc')" id="dbg">X: NaN, Y: NaN</p>-->
+
+</body>
+</html>

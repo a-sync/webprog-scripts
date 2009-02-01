@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2" />
+	
+	<title>js menu rc7</title>
+<style>
+.tooltip {
+padding: 5px;
+
+display: inline;
+visibility: hidden;
+position: absolute;
+
+margin-left: 5px;
+background-color: gold;
+border: 1px solid gray;
+
+z-index: 314;
+}
+</style>
+<script type="text/javascript">
+
+/* egér x és y koordinátája az oldalon */
+function mouSeXY(event)
+{
+  var mX = 0;
+	var mY = 0;
+
+  var e = (!event) ? window.event : event;
+
+  if(e.pageX || e.pageY)
+  {
+    mX = e.pageX;
+    mY = e.pageY;
+  }
+  else if(e.clientX || e.clientY)
+  {
+    mX = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+    mX = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+  }
+
+  return [mX, mY];
+}
+
+
+var tipID = 'tipbox';
+var tipBox = false;
+function tip(elem, text)
+{
+  if(text == false)
+  {
+    tip_box(false);
+    //elem.setAttribute('onmousemove', '');
+    //elem.setAttribute('onmouseout', '');
+  }
+  else
+  {
+    elem.setAttribute('onmousemove', 'tip_pos(event);');
+    //elem.setAttribute('onmouseout', 'tip_box(false);');
+    elem.setAttribute('onmouseout', 'tip(this, false);');
+    //elem.setAttribute('onclick', 'tip_pos(event);');
+    //elem.setAttribute('onmouseover', 'tip_pos(event, text);');
+    tip_box(text);//ha máshonnan kel szedni a szöveget akkor itt a helye
+  }
+}
+
+function tip_box(text)
+{
+  if(tipBox == false) //ha nincsen belőve a doboz, akkor inicializálni
+  {
+    tipBox = document.createElement('div');
+    tipBox.setAttribute('id', tipID);
+
+    tipBox.setAttribute('style', 'visibility: hidden; position: absolute; width: 250px; z-index: 314; padding: 5px; background: #fff0cc; border: 2px dashed gray;');
+
+    document.body.insertBefore(tipBox, null);//nem tolja el a DOM fát
+    tipBox = document.getElementById(tipID);
+  }
+  
+  if(text == false)
+  {
+    tipBox.style.visibility = 'hidden';
+    //tipBox.innerHTML = '';//tartalom ürítése
+  }
+  else
+  {
+    tipBox.style.visibility = 'visible';
+    tipBox.innerHTML = text;//adatszűrés!
+  }
+}
+
+function tip_pos(event)
+{
+  var mPos = mouSeXY(event);
+
+  tipBox.style.left = (mPos[0] + 5) + 'px';
+  tipBox.style.top = (mPos[1] +5) + 'px';
+
+  dbg([mPos[0], mPos[1]]);//dbg
+}
+
+
+
+
+function dbg(pos) {
+  //alert('x: '+pos[0]+', y: '+pos[1]);
+  
+  var de = document.getElementById('dbg');
+  de.innerHTML = 'X: '+pos[0]+', Y: '+pos[1];
+}
+
+//a tooltip magasságát bekérni és az alapján meg az oldal méretei alapján eltolni ha valahol kilógna
+
+/*
+if(!document.all) document.captureEvents(Event.MOUSEDOWN);
+document.onmousedown = drawSel1;
+if(!document.all) document.captureEvents(Event.MOUSEMOVE);
+document.onmousemove = drawSel2;
+*/
+/*
+
+if ( window.addEventListener ) window.addEventListener( "load", CheckboxKezeles, false );
+else if ( window.attachEvent ) window.attachEvent( "onload", CheckboxKezeles );
+*/
+</script>
+</head>
+<body bgcolor="#c0c0c0">
+
+somtin<br/>
+<img id="teszt" onmouseover="tip(this, 'teszt 1 2 3 <br/> segítség :9')" src="downloadarrow_new2.jpg"/>
+<p onclick="tip(this, 'p tagnel cucc')" id="dbg">X: NaN, Y: NaN</p>
+
+</body>
+</html>
