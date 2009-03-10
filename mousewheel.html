@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=iso-8859-2" />
+	
+	<title>tooltip (zeta)</title>
+<style>
+<!--
+/*css*/
+body {
+  backgroun-color: lavender;
+  font-size: 18px;
+}
+
+.teszt1 {
+  color: darkred;
+  cursor: help;
+}
+
+#tipbox {
+  font-size: 14px;
+  font-face: Arial, Verdana, serif;
+}
+-->
+</style>
+<script type="text/javascript">
+<!--
+/** This is high-level function; REPLACE IT WITH YOUR CODE.
+ * It must react to delta being more/less than zero.
+ */
+
+function handle(delta) {
+	if (delta < 0)
+		document.getElementById('wheeldown').innerHTML += delta + ' ';
+	else
+		document.getElementById('wheelup').innerHTML += delta + ' ';
+}
+
+function wheel(event){
+	var delta = 0;
+	if (!event) event = window.event;
+	if (event.wheelDelta) {
+		delta = event.wheelDelta/120; 
+		if (window.opera) delta = -delta;
+	} else if (event.detail) {
+		delta = -event.detail/3;
+	}
+	if (delta)
+		handle(delta);
+        if (event.preventDefault)
+                event.preventDefault();
+        event.returnValue = false;
+}
+
+/* Initialization code. */
+if (window.addEventListener)
+	window.addEventListener('DOMMouseScroll', wheel, false);
+window.onmousewheel = document.onmousewheel = wheel;
+//-->
+</script>
+</head>
+<body>
+<p id="wheelup">Wheel up: </p>
+<p id="wheeldown">Wheel down: </p>
+<br/><br/>
+- vec
+</body>
+</html>
