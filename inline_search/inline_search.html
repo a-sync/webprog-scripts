@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="language" content="hu" />
+
+  <meta name="copyright" content="Vector" />
+  <meta name="Author" content="Vector" />
+
+  <meta name="googlebot" content="index, follow, archive" />
+  <meta name="robots" content="all, index, follow" />
+
+  <meta name="msnbot" content="all, index, follow" />
+
+  <meta name="rating" content="general" />
+  <meta name="resource-type" content="document" />
+  <meta name="distribution" content="Global" />
+  <meta name="revisit-after" content="1 day" />
+
+  <meta name="page-type" content="" />
+  <meta name="subject" content="" />
+  <meta name="description" content="" />
+
+  <meta name="keywords" content="" />
+
+  <title>inline search</title>
+
+  <style type="text/css" rel="stylesheet">
+  <!--
+    #is_box {
+      position: fixed;
+      bottom: 20px;
+      left: 10px;
+      width: 200px;
+      height: 50px;
+      border: 1px dashed lavender;
+      margin: 0;
+      padding: 10px 0 0 0;
+      text-align: center;
+      background-color: #3a3a3a;
+    }
+    #is_input {
+      width: 150px;
+      height: 28px;
+      border: 1px solid darkgray;
+      margin: 0;
+      padding: 5px;
+      font-size: 24px;
+      font-family: Verdana, Helvetica, Arial, sans-serif;
+    }
+    .is_selected {
+      background-color: #ffdd00;
+      color: #0a0a0a;
+      display: inline;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      width: auto;
+      height: auto;
+    }
+  -->
+  </style>
+
+	<script type="text/javascript">
+	<!--
+	// a teljes originalt backupolom, de belemegyek a node-okba cserélgetni
+	// -- mindig vissza kell cserelni uj valtoztatasok elejen
+	
+    if(window.attachEvent) window.attachEvent('onload', inline_search);
+    else window.addEventListener('load', inline_search, false);
+    
+    var original = false;
+    var texts_id = 'lorem_ipsum';
+	  
+	  function inline_search(event)
+	  {
+      var is_input = document.getElementById('is_input');
+      if(!is_input) return false;
+      
+	    if(original === false)
+	    {
+        if(is_input.attachEvent) is_input.attachEvent('onkeyup', inline_search);
+        else is_input.addEventListener('keyup', inline_search, false);
+        
+        original = true;
+      }
+      else
+      {
+        if(!texts_id) var texts = document.body;
+        else var texts = document.getElementById(texts_id);
+        
+        if(original === true) original = texts.innerHTML;
+        
+        if(is_input.value.length > 2) // minimum 3 karakter
+        {
+  	      //texts.innerHTML = original.split(is_input.value).join('<span class="is_selected">' + is_input.value + '</span>');
+          
+          var expression = new RegExp('(' + is_input.value + ')', 'gi');
+  	      texts.innerHTML = original.replace(expression, '<span class="is_selected">$1</span>');
+        }
+        else if(original != texts.innerHTML)
+        {
+          texts.innerHTML = original;
+        }
+      }
+	  }
+	  
+	-->
+	</script>
+
+
+</head>
+<body bgcolor="#efeeda">
+<div id="is_box">
+<input type="text" id="is_input" name="is_input" />
+</div>
+
+<div id="lorem_ipsum">
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec aliquet, enim a rutrum gravida, dolor erat rhoncus nulla, eget lobortis dolor velit vel arcu. Proin ut dignissim leo. Nullam et rhoncus ipsum. Sed iaculis venenatis elit, vitae placerat dolor laoreet vel. Pellentesque pulvinar arcu sit amet turpis vulputate quis pulvinar metus ultrices. Nunc consectetur, velit eget pellentesque consectetur, dui ipsum interdum justo, at feugiat tellus ipsum eu nunc. Maecenas tristique justo nec felis ultricies in porta sem tincidunt. Cras non varius libero. Cras nec arcu a augue dapibus viverra ut et magna. Cras nec erat eros, ut imperdiet lectus. Maecenas viverra sagittis felis sit amet convallis. Morbi ipsum ligula, interdum quis blandit tincidunt, dapibus sit amet nibh. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce lorem diam, pellentesque id consectetur in, facilisis at dolor. Vestibulum elementum iaculis ultricies.
+</p>
+
+<p>
+Aliquam erat volutpat. In hac habitasse platea dictumst. Nunc elementum tortor quis justo pulvinar tristique. Quisque at ornare tortor. Sed bibendum, ligula eu semper congue, nibh tellus lacinia enim, id varius nibh nulla sit amet odio. Donec nec mauris ante. Aenean ac libero tellus, sit amet ultricies urna. Integer condimentum laoreet purus in condimentum. Cras aliquam mauris in nisl dictum vulputate. Suspendisse rhoncus enim nec est scelerisque ullamcorper. Vestibulum hendrerit, tellus lacinia sagittis adipiscing, erat erat facilisis ligula, sed accumsan risus eros eget turpis. Nam commodo consequat iaculis. Suspendisse dictum libero at urna pulvinar convallis. Phasellus venenatis mi et mauris dapibus dapibus. Etiam felis dui, bibendum vitae ornare eu, pretium id libero. Nulla ante lectus, condimentum pharetra viverra quis, posuere lobortis magna. Proin at dui iaculis augue imperdiet rutrum. Integer laoreet vestibulum posuere.
+</p>
+
+<p>
+Ut iaculis, nisl eget dignissim condimentum, tortor nunc tempus nisl, in fermentum lorem purus dapibus neque. In lobortis eros in velit cursus quis tincidunt massa vestibulum. Proin vel ipsum massa, et lobortis elit. Nunc tellus est, pulvinar et venenatis vitae, dictum ut turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In tortor odio, vulputate non ullamcorper eget, egestas feugiat ipsum. Maecenas vel blandit ante. Donec laoreet, augue dignissim fermentum vehicula, nunc ante rutrum mi, ut varius orci neque in lectus. Sed euismod eros eu ante consectetur ac rutrum velit lacinia. Phasellus in felis vitae mi congue condimentum eu vitae eros. Sed et sem a sem bibendum gravida. Mauris tincidunt porta purus, vestibulum lacinia neque hendrerit commodo.
+</p>
+
+<p>
+Nullam lacus urna, scelerisque quis porttitor ornare, volutpat at nunc. Etiam scelerisque eros a felis gravida sed luctus dolor facilisis. Donec vitae justo in felis aliquam cursus sed id elit. Duis id nulla orci. Nunc imperdiet ipsum non nisl consectetur ultricies. Donec non neque eget dolor luctus scelerisque vel at lacus. Ut ante tortor, molestie eu aliquet ac, blandit vitae dui. Etiam condimentum, purus a suscipit consectetur, erat libero varius ligula, et facilisis metus est vitae massa. Duis enim augue, iaculis vel vulputate a, ultrices a orci. Suspendisse vulputate felis nec urna fringilla vitae lobortis metus lobortis. Quisque pulvinar enim vel velit blandit id laoreet urna commodo. Mauris adipiscing urna et nulla ornare eu feugiat elit laoreet. Nunc et lacinia neque.
+</p>
+
+<p>
+Suspendisse potenti. Suspendisse in laoreet felis. Donec dapibus orci sit amet enim posuere vel imperdiet tortor sagittis. Pellentesque pellentesque ultricies leo, vitae fermentum lorem blandit et. Mauris porttitor ipsum eros, eu tincidunt metus. Praesent volutpat ullamcorper scelerisque. Etiam pellentesque posuere quam et semper. Praesent a risus adipiscing metus vestibulum malesuada ut a orci. Sed ut consequat risus. Vivamus vulputate dapibus lacinia. Cras ac risus et eros facilisis sagittis. Nulla facilisi. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam non neque purus, et iaculis ligula. Nam porta augue et dui blandit rhoncus. Praesent pharetra dapibus nulla, at consequat odio pellentesque sed. Sed nunc mauris, sodales eget molestie ut, elementum sit amet eros. Praesent posuere, ligula cursus cursus lacinia, risus erat tempor eros, eu rutrum nunc lorem nec lectus.
+</p>
+</div>
+
+</body>
+</html>
