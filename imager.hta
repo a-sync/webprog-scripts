@@ -1,0 +1,432 @@
+<html>
+<!------------------------------------------------------------------------------------
+Title:   imager.hta     html application with VBScript
+			M. Gallant  12/07/2001
+ imager.hta is a drag & drop utility for recursively displaying  images files
+ within folders. The file path is displayed, along with file size, and if the
+ file is of type gif, jpg, ico, bmp, png, emf, xbm  the image is displayed.
+ The DropHandler shell extension must be configured for .hta file types
+ to use this utility. The application checks to see if the necessary registry
+ changes have already been made, and if not, offers the option to perform 
+ the change using this code:
+ ----------  Configure DropHandler for .hta ----------------
+   set shell = createobject("wscript.shell")
+   sKey = "HKEY_CLASSES_ROOT\HTAFile\ShellEx\DropHandler\"
+   sValue = "{60254CA5-953B-11CF-8C96-00AA00B8708C}"
+   shell.regwrite sKey, sValue, "REG_SZ"
+ ---------- End Configure DropHandler for .hta -----------
+
+Buttons:
+ Enable Recursive:  Recursively displays all subfolders (default disabled)
+ Show All Files : Shows file path and size for all files in folders (default disabled)
+ Select Folder:  Displays folder-selection dialog (single folder only)
+ Refresh:   For < IE5.5, items dragged into "Drop Here" requires manual Refresh
+
+Parameters:
+ MaxFiles:  Maximum number of listed folders and files.
+Credits:  
+  Thanks to the following for valuable revisions and suggestions:
+    Mike Musterd,  Alex Angelopoulos,  Michael Harris 
+-------------------------------------------------------------------------------------->
+
+<head>
+<hta:application id=imagerHTA
+    APPLICATIONNAME="imagerApp"
+    SINGLEINSTANCE="no"
+    NAVIGABLE="no"
+  >
+<script language="VBScript">
+Option Explicit
+Const RevDate = "12/07/2001"
+
+Dim strCommandLine, dropHandlerConfigured, arin, result, ShowAllFiles, Recursive, sKey, sValue, selectPath, filecount, MaxFiles
+Dim fso, WshShell, oFolder, oFiles, oFile,  Folders, Folder, file, Exten, oShell, oShFolder, oFolderItem
+Dim shellVersionOK, shell32dllpath, shellversion, strOSversion, versionnums, clickedFiletxt, clickedFile, fitem
+Dim args(20), nextquote, nextspace, arglength, argscount, charcount, MaxFileExceeded, appimgprops, oImage,  IF1dropText, decimalsymbol
+
+Set fso = CreateObject("Scripting.FileSystemObject")  'instantiates fso for all later use
+Set WshShell = CreateObject("WScript.Shell") 
+
+ShowAllFiles = False 'set this to true to show also non-pictures
+Recursive = False   'recursively search all subfolders
+shellVersionOK = True   'status of shell32.dll version (v4.71 required for shell file dialog and props sheet)
+
+shellVersionOK = shellVersionCheck()
+dropHandlerConfigured = startupCheck()   ' ensure dropHandler configured via registry.
+
+MaxFiles = 250
+
+Sub showIFcontents
+ If IF1.location = "about:blank" Then
+    IF1.document.writeln "<body bgcolor=blue>"
+    IF1.document.writeln "<font color=yellow>Drop Here</font></body>" 
+    Exit Sub
+ End If
+   If LEFT(LCase(IF1.location), 8) = "file:///" Then
+     selectPath = unescape(MID(IF1.location, 9))    'remove encoded spaces etc.
+     window_onLoad()
+   End If
+ IF1.location = "about:blank"
+End Sub
+
+Sub dorefresh
+ IF1dropText = ""
+ On Error Resume Next
+ IF1dropText = IF1.document.body.innerText  'generates an error if folder was dropped
+  If Err OR LEFT(IF1dropText,9) <>"Drop Here" AND LEFT(LCase(IF1.location), 8) = "file:///" Then
+     selectPath = unescape(MID(IF1.location, 9))    'remove encoded spaces etc.
+     IF1.location = "about:<body bgcolor=blue><font color=yellow>Drop Here</font>"
+  End If
+   On Error GoTo 0
+  window_onLoad()
+End Sub
+
+Sub setmaxfiles
+  If oMaxfiles.selectedIndex = 4  Then
+   MaxFiles = 1E9
+  Else
+   MaxFiles = CLng(oMaxfiles.options(oMaxfiles.selectedIndex).text)
+  End If
+End Sub
+
+Sub document_onclick
+  If window.event.srcElement.tagName = "IMG" Then
+   set oImage = window.event.srcElement
+   oImage.border = 2   'highlight image with border
+    MsgBox  "Image: " &  oImage.nameProp &  vbCrLf & vbCrLf & _
+    "Image Size: " & oImage.width &  " x " &  oImage.height & " pixels" & vbCrLf & _
+    "File Size: " & oImage.fileSize & " bytes"  & vbCrLf & vbCrLf & _
+    "Created: " & oImage.fileCreatedDate & vbCrLf & _
+    "Modified: " & oImage.fileModifiedDate & vbCrLf , _
+     vbInformation + vbOKOnly
+    oImage.border = 0
+      Exit Sub
+  End If
+
+  If IsNumeric(window.event.srcElement.id)  Then       'only capture numeric IDs
+    clickedFiletxt = window.event.srcElement.innerText
+   Else
+    Exit Sub
+  End If
+
+  If InStr(clickedFiletxt, " (") Then
+     clickedFiletxt = Trim(Left(clickedFiletxt, InStr(clickedFiletxt, " (")))
+    Else
+     Exit Sub
+  End If
+
+ If fso.FileExists(clickedFiletxt) AND NOT window.event.ctrlKey  _
+       AND NOT window.event.shiftKey AND NOT window.event.altKey Then       'unmodified mouse left-button
+    On Error Resume Next
+    WshShell.Run """" & clickedFiletxt & """"     'open image with file-associated application
+    On Error GoTo 0
+
+ ElseIf  shellVersionOK AND window.event.ctrlKey  _
+       AND NOT window.event.shiftKey AND NOT window.event.altkey Then
+     Set clickedFile = fso.getFile(clickedFiletxt)
+     set oShell = CreateObject("Shell.Application")
+    If  RIGHT(fso.getParentFolderName(clickedFiletxt), 1) =  "\"    Then             'watch for root drive
+     set fitem = oShell.namespace(fso.getParentFolderName(clickedFiletxt)).parsename(clickedFile.Name)
+    Else
+     set fitem = oShell.namespace(fso.getParentFolderName(clickedFiletxt)& "\").parsename(clickedFile.Name)
+    End If
+     fitem.invokeverb("P&roperties")
+     Set clickedFile = nothing 
+     Set oShell = nothing
+  End If
+End Sub
+
+Sub toggleRecurse
+ Recursive = NOT Recursive
+  If Recursive Then
+   recurse.value = "Disable Recursive"
+  Else
+   recurse.value = "Enable Recursive"
+  End If
+ window_onload()
+End Sub
+
+Sub toggleShowAll
+ ShowAllFiles = NOT ShowAllFIles
+  If ShowAllFiles Then
+   showall.value = "Show Images Only"
+  Else
+   showall.value = "Show All Files"
+  End If
+ window_onload()
+End Sub
+
+Sub selectFolder
+ If NOT shellVersionOK Then    'do nothing if Shell32.dll < 4.71
+   Exit Sub
+ End If
+   filecount = 0
+   MaxFileExceeded = False
+   selectPath = ""
+  If NOT dropHandlerConfigured Then 
+     Exit Sub
+   Else
+    div1.innerHTML = ""     'clear DIV block
+   End If
+   set oShell = CreateObject("Shell.Application")
+   set oShFolder = oShell.BrowseForFolder(0, "Choose a Folder", 0)
+On Error Resume Next
+   set oFolderItem = oShFolder.Items.Item
+  If Err.Number <> 0 Then        ' check if user cancelled folder-select
+    Exit Sub
+  Else
+   selectPath = oFolderItem.Path
+   DisplayContents selectPath 
+ End If
+  On Error GoTo 0
+ set oShell = nothing
+ set oShFolder = nothing
+ CheckFileCount()
+ End Sub
+
+Sub window_onload()
+ filecount=0
+ MaxFileExceeded = False
+ If NOT dropHandlerConfigured Then
+    Exit Sub
+  Else
+    div1.innerHTML = ""     'clear DIV block
+  End If
+
+If selectPath <> "" Then
+   DisplayContents selectPath      'if File Dialog used
+ else
+ strCommandLine = Trim(imagerHTA.commandLine)  'removing trailing space(s)
+
+charcount = 1
+argscount = 0
+
+'---------  parse command line; paths with spaces are explicitly quoted; others are not ---------
+Do While charcount< Len(strCommandLine)
+ If Mid(strCommandLine,charcount,1) = """" Then  'if quoted argument 
+   nextquote =  Instr(charcount+1, strCommandLine, """")
+   arglength = nextquote - charcount - 1
+   args(argscount) = Mid(strCommandLine, charcount+1,arglength)
+   argscount = argscount + 1
+   charcount = nextquote + 2    ' skip final quote and space
+ Else                              'must be unquoted argument with no internal spaces
+  nextspace = Instr(charcount, strCommandLine, " ")
+     If nextspace=0 Then            ' final space is Trimmed
+       nextspace = Len(strCommandLine) + 1
+     End If
+  arglength = nextspace - charcount
+  args(argscount) = Mid(strCommandLine, charcount, arglength)
+  argscount = argscount + 1
+  charcount = nextspace + 1    ' skip space
+ End If
+Loop
+
+  If argscount > 1 Then 
+    arin = 1 'first argument is application itself ;skip this
+    While arin < argscount
+       DisplayContents args(arin)
+       arin = arin + 1
+    Wend
+  End If
+
+ End If     'end If selectPath ....
+ CheckFileCount()
+End Sub
+
+Sub DisplayContents(FileOrFolder)
+  If MaxFileExceeded Then Exit Sub   ' recursively break out of procedure
+  filecount = filecount+1 
+  If  fso.FileExists(FileOrFolder) Then
+    displayfiletag(fso.getFile(FileOrFolder))  ' need to pass file object to use file.Size
+  ElseIf  fso.FolderExists(FileOrFolder) Then
+    ' if a folder was given
+    div1.insertAdjacentHTML "BeforeEnd", _
+    "<b>---- Folder <A HREF=""file:///" & FileOrFolder & """>" & _
+        FileOrFolder & "</A></b><br>"
+
+    Set oFolder = fso.GetFolder(FileOrFolder)
+    Set oFiles = oFolder.Files ' Get Files collection.
+    For Each oFile In oFiles   ' All files
+      displayfiletag(oFile)
+     Next
+
+    If Recursive Then          'If recursive into subfolders
+      Set Folders = oFolder.SubFolders 'recurse
+       For Each Folder In Folders
+        DisplayContents(Folder)
+       Next
+     End If
+
+    div1.insertAdjacentHTML "BeforeEnd", _
+      "<b>---- End  Folder ----</b><br><br>"
+    Set oFolder = nothing
+    Set oFiles = nothing
+  Else
+     displayfiletag(FileOrFolder)
+  End If
+End Sub
+
+Sub displayfiletag(file)      ' textual comparisons 
+        If filecount > MaxFiles Then
+           MaxFileExceeded = True	
+           Exit Sub
+         End If
+
+ Exten = LCase(Right(file, 4))   '
+ If  Exten = ".gif"  OR Exten = ".jpg" OR Exten = ".bmp" OR _
+     Exten = ".ico" OR Exten = ".xbm" OR Exten = ".png" OR _
+     Exten = ".wmf" OR Exten =".emf"  Then
+
+  If Eval(LCase(Right(file, 3)) & ".checked")  Then
+    div1.insertAdjacentHTML "BeforeEnd", _
+      "<img src=""file://" & file & """><br>"
+    div1.insertAdjacentHTML "BeforeEnd", _
+     "<font size=-1><div ID=" & filecount & ">" & file & "  (" & file.Size & " bytes ) </div></font><br>"
+       filecount=filecount+1
+   End If    ' end Eval(LCase ...
+
+  ElseIf ShowAllFiles Then
+    div1.insertAdjacentHTML "BeforeEnd", _
+      "<font size=-1><div ID=" & filecount & ">" & file & "  (" & file.Size & " bytes ) </div></font><br>"
+       filecount=filecount+1
+
+ End If     ' end If Exten
+End Sub
+
+Sub CheckFileCount
+  If filecount > MaxFiles Then
+     MsgBox "Too many files (" & filecount & ")" & vbCrLf & _
+     "Increase the MaxFiles value", vbExclamation
+  End If 
+End Sub
+
+Function shellVersionCheck()    'check is Win95 or NT4 and if so, if Shell32.dll ver is <4.71
+ shellVersionCheck = True  'assume success
+On Error Resume Next
+strOSversion = WshShell.RegRead(_
+   "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\CurrentVersion")
+
+If Err Then         ' must be Win9x or WinME; only Win95 is really an issue
+   shell32dllpath = WshShell.ExpandEnvironmentStrings("%WINDIR%\System\Shell32.dll")
+ ElseIf strOSversion = "4.0" Then        'only NT4 is a potential issue
+   shell32dllpath = WshShell.ExpandEnvironmentStrings("%WINDIR%\System32\Shell32.dll")
+ Else
+   shellVersionCheck = True     'must be Win2000 or XP so OK
+   Exit Function
+End If
+
+On Error GoTo 0
+
+decimalsymbol = "."
+If fso.FileExists(shell32dllpath) Then
+   shellversion = fso.GetFileVersion(shell32dllpath)
+ On Error Resume Next
+ decimalsymbol = WshShell.RegRead(_
+   "HKEY_CURRENT_USER\Control Panel\International\sDecimal")
+ versionnums =Split(shellversion, ".")
+ shellversion = CSng(versionnums(0) & decimalsymbol & versionnums(1))
+ On Error GoTo 0
+ IF shellversion < 4.71 Then
+   shellVersionCheck = False
+  End If
+Else
+   shellVersionCheck = False
+End If
+End Function
+
+
+Function  startupCheck()
+' check to ensure DropHandler shell extension is configured
+On Error Resume Next
+ WshShell.RegRead("HKEY_CLASSES_ROOT\HTAFile\ShellEx\DropHandler\")
+If Err.Number <> 0 Then
+   startupCheck = False    ' not configured yet
+   result =  MsgBox ("DropHandler extension not configured for .hta file" & vbCrLf & vbCrLf & _
+        "Configure Registry Now?? ", vbYesNo+vbExclamation, "DropHandler Configuration")
+    If result = vbYes Then
+        ConfigDropHandler()
+       Else
+          MsgBox "DropHandler must be configured to use this hta application", vbOK + vbCritical
+      End If
+ Else
+ startupCheck = True  ' already properly configured
+End If
+End Function
+
+Sub ConfigDropHandler()
+ sKey = "HKEY_CLASSES_ROOT\HTAFile\ShellEx\DropHandler\"
+ sValue = "{60254CA5-953B-11CF-8C96-00AA00B8708C}"
+ WshShell.regwrite sKey, sValue, "REG_SZ"
+ MsgBox "DropHandler configured" & vbCrLf & _
+  "You may need to restart Windows", vbInformation
+End Sub
+
+Sub About
+ MsgBox "Imager.hta             M. Gallant  " & RevDate & vbCrLf & vbCrLf & _
+ " Drag files and/or folders onto imager.hta icon or ... " & vbCrLf & _
+ " drag folder into ""Drop Here"" box or ..." & vbCrLf & _
+ " click ""Select Folder"" button." & vbCrLf & vbCrLf & _
+ " Click listed file-path to open file with file-type associated application." & vbCrLf & _
+ " <Ctrl+Click> to display Properties Panel for file." & vbCrLf & _
+ " Click displayed image to display basic image properties." & vbCrLf & vbCrLf & _
+ " Limit number of displayed files with ""MaxFiles"" selection."  & vbCrLf & _
+ " Filter image file-types with checkboxes." & vbCrLf & _
+ " Toggle show all files with ""Show All Files"" button." & vbCrLf & _
+ " Toggle full folder recursion with ""Enable Recursive"" button." & vbCrLf, vbInformation
+  window.event.returnValue = False
+End Sub
+
+Sub Credits
+ MsgBox "Imager.hta             M. Gallant  " & RevDate & vbCrLf & vbCrLf & _
+ "Thanks to the following for valuable contributions: " & vbCrLf & _
+  "   - Michael Harris" & vbCrLf & _
+  "   - Mike Musterd" & vbCrLf & _
+  "   - Alex Angelopoulos" & vbCrLf, vbInformation
+  window.event.returnValue = False
+End Sub
+
+</script>
+</head>
+
+<body>
+   <table border=0 width=450 cellpadding = 7 bgcolor="#D0D0D0" STYLE = "border: 1px solid black"><tr>
+   <td valign=top><font size=+2 color=red><b>Imager.hta: </b></font> <br>
+MaxFiles: <SELECT ID="oMaxfiles" SIZE="1" LANGUAGE='VBScript' onchange="setmaxfiles()">
+ <OPTION VALUE=1>100
+ <OPTION VALUE=2 SELECTED>250
+ <OPTION VALUE=3 >500
+ <OPTION VALUE=4 >1000
+ <OPTION VALUE=5>All
+</SELECT> 
+ </td>
+<td align=right width=100>
+<IFrame ID="IF1" scrolling=no width=80 height=70  onload="showIFcontents()" TRUSTED=yes bgcolor="RED"></IFRAME>
+</td> 
+ <td align=right>
+  <a LANGUAGE="VBScript"  href="#" onclick="About()">About</a><br><br>
+  <a LANGUAGE="VBScript"  href="#" onclick="Credits()">Credits</a><br>
+</td></tr></table>
+<br>
+
+ <INPUT TYPE='BUTTON'  LANGUAGE='VBScript'  ID='recurse'  
+             onclick='toggleRecurse' VALUE='Enable Recursive' STYLE = 'width: 120; font-size: 75%; color:blue'> 
+  <INPUT TYPE='BUTTON'  LANGUAGE='VBScript' ID='ShowAll'  
+          onclick='toggleShowAll' VALUE='Show All Files' STYLE = 'width: 120; font-size: 75%; color:blue' > 
+ <INPUT TYPE='BUTTON'  LANGUAGE='VBScript'  ID='ChooseFolder' 
+            onclick='selectFolder' VALUE='Select Folder' STYLE = 'width: 120; font-size: 75%; color:blue'>
+ <INPUT TYPE='BUTTON'  LANGUAGE='VBScript'  ID='Refresh' 
+            onclick='dorefresh()' VALUE='Refresh' STYLE = 'width: 120; font-size: 75%; color:yellow; background-Color:blue'><br>
+
+<INPUT TYPE=checkbox CHECKED ID=GIF>gif &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=JPG>jpg &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=BMP>bmp &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=ICO>ico &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=XBM>xbm &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=PNG>png &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=WMF>wmf &nbsp;
+<INPUT TYPE=checkbox CHECKED ID=EMF>emf &nbsp; 
+
+<br><hr align=left size=1 width=500><br>
+<div ID="div1"></div>
+</body>
+</html>
