@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>Multipad</title>
+  
+  <script type="text/javascript">
+  <!--
+    var ALLOMAS = 'TESZT.PROBA';
+    window.resizeTo(625, 680);
+  -->
+  </script>
+  
+  <hta:application id="oHTA" applicationname="Multipad" border="thin" borderstyle="dialog" caption="yes" contextmenu="no" icon="favicon.ico" innerborder="no" maximizebutton="no" minimizebutton="yes" navigable="no" scroll="no" scrollflat="yes" selection="yes" showintaskbar="yes" singleinstance="yes" sysmenu="yes" version="1.0" windowstate="normal" />
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+  <script type="text/javascript">
+  <!--
+  if(window.attachEvent) window.attachEvent('onload', mp_init);
+  else window.addEventListener('load', mp_init, false);
+  
+  function mp_init()
+  {
+    var oHTA = _id('oHTA');
+    
+    var theframe = document.createElement('IFRAME');
+    theframe.setAttribute('id', 'theframe');
+    theframe.setAttribute('application', 'yes');
+    theframe.setAttribute('border', '0');
+    theframe.setAttribute('frameborder', '0');
+    theframe.setAttribute('src', 'http://redir.at/files/private/multipad/?applicationname='+oHTA.applicationName+'&commandline='+escape(encodeURI(oHTA.commandLine))+'&version='+oHTA.version+'&allomas='+ALLOMAS);
+    //theframe.setAttribute('src', 'http://127.0.0.1/?applicationname='+oHTA.applicationName+'&commandline='+escape(encodeURI(oHTA.commandLine))+'&version='+oHTA.version);
+    
+    _id('thebody').appendChild(theframe, false);
+  }
+  
+  function _id(id) {
+    if(!id) return false;
+    var id = document.getElementById(id);
+    if(!id) return false;
+    //else return true;
+    else return id;
+  }
+  
+  -->
+  </script>
+  
+  <style type="text/css">
+  <!--
+    html, body, #theframe {
+      background-color: #040404;
+      width: 620px;
+      height: 660px;
+      border: 0;
+      margin: 0;
+      padding: 0;
+    }
+  -->
+  </style>
+  
+</head>
+<body scroll="no" id="thebody" border="0">
+
+
+
+</body>
+</html>
