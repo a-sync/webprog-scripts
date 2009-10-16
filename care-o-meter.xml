@@ -1,0 +1,46 @@
+<Module>
+  <ModulePrefs title="Care-O-Meter" height="80">
+   <Require feature="rpc"/>
+  </ModulePrefs>
+
+  <Content type="html">
+  <![CDATA[
+  <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
+  <script type="text/javascript">
+
+    function refresh() {
+      var v = parseInt(wave.getState().get('n', '5'));
+      for(var i = 0; i <= 10; i++)
+      {
+        document.getElementById('care-' + i).disabled = (v == i) ? true : false;
+      }
+    }
+    function init() {
+      if (wave && wave.isInWaveContainer()) {
+        wave.setStateCallback(refresh);
+      }
+    }
+    function care(n)
+    {
+      wave.getState().submitDelta({'n': n});
+      refresh();
+    }
+    
+    gadgets.util.registerOnLoadHandler(init);
+  </script>
+  <span style="font-style: Verdana, sans-serif;">
+    <button id="care-0" onclick="care(0)" style="color: navy; font-size: 10px;">0</button>
+    <button id="care-1" onclick="care(1)" style="color: blue; font-size: 12px;">1</button>
+    <button id="care-2" onclick="care(2)" style="color: lightblue; font-size: 14px;">2</button>
+    <button id="care-3" onclick="care(3)" style="color: teal; font-size: 16px;">3</button>
+    <button id="care-4" onclick="care(4)" style="color: green; font-size: 18px;">4</button>
+    <button id="care-5" onclick="care(5)" style="color: darkgreen; font-size: 20px;">5</button>
+    <button id="care-6" onclick="care(6)" style="color: slateblue; font-size: 22px;">6</button>
+    <button id="care-7" onclick="care(7)" style="color: purple; font-size: 24px;">7</button>
+    <button id="care-8" onclick="care(8)" style="color: orangered; font-size: 26px;">8</button>
+    <button id="care-9" onclick="care(9)" style="color: red; font-size: 28px;">9</button>
+    <button id="care-10" onclick="care(10)" style="color: maroon; font-size: 30px;">10</button>
+  </span>
+  ]]>
+  </Content>
+</Module>

@@ -1,0 +1,54 @@
+<Module>
+  <ModulePrefs title="Care-O-Meter" height="40">
+   <Require feature="rpc"/>
+  </ModulePrefs>
+
+  <Content type="html">
+  <![CDATA[
+  <script type="text/javascript" src="http://wave-api.appspot.com/public/wave.js"></script>
+  <script type="text/javascript">
+
+    function init() {
+      if (wave && wave.isInWaveContainer()) {
+        wave.setStateCallback(setup);
+      }
+    }
+    
+    function setup()
+    {
+      var v = wave.getState().get('text', '');
+      var box = document.getElementById('peek-a-boo');
+      if(!v)
+      {
+        box.innerHTML = '<input id="text" type="text" /><input type="button" onclick="set();" value="Set!" />';
+        // value enter text here id(text).select()
+      }
+      else
+      {
+        box.innerHTML = '<input type="button" onclick="show();" value="Show!" />';
+      }
+    }
+    
+    function show()
+    {
+      var v = wave.getState().get('text', '');
+      var box = document.getElementById('peek-a-boo');
+      
+      box.innerHTML = '<input id="text" type="text" value="' + v + '" readonly="readonly" />';
+    }
+    
+    function set()
+    {
+      var text = document.getElementById('text').value;
+      wave.getState().submitDelta({'text': text});
+      
+      setup();
+    }
+    
+    gadgets.util.registerOnLoadHandler(init);
+  </script>
+  <span id="peek-a-boo" style="font-style: Verdana, sans-serif;">
+  </span>
+  ]]>
+  </Content>
+</Module>
