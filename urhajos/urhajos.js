@@ -46,10 +46,10 @@ felulet['maximum_csillag'] = 'maximum_csillag'; // a maximum csillag; input elem
 var urhajo = [];
 urhajo['kezdo_x'] = false; // hajó kezdõ pozíciója az x tengelyen (false = oszlopok számának közepe)
 urhajo['kezdo_y'] = false; // hajó pozíciója az y tengelyen (false = pálya teteje)
-urhajo['lephet_fel'] = 1; // az ûrhajó egy ciklusban hányat lépett felfelé (false = végtelen)
-urhajo['lephet_le'] = 1; // az ûrhajó egy ciklusban hányat lépett lelfelé (false = végtelen)
-urhajo['lephet_jobbra'] = false; // az ûrhajó egy ciklusban hányat lépett jobbra (false = végtelen)
-urhajo['lephet_balra'] = false; // az ûrhajó egy ciklusban hányat lépett balra (false = végtelen)
+urhajo['lephet_fel'] = 2; // az ûrhajó egy ciklusban hányat léphet felfelé (false = végtelen)
+urhajo['lephet_le'] = 2; // az ûrhajó egy ciklusban hányat léphet lelfelé (false = végtelen)
+urhajo['lephet_jobbra'] = false; // az ûrhajó egy ciklusban hányat léphet jobbra (false = végtelen)
+urhajo['lephet_balra'] = false; // az ûrhajó egy ciklusban hányat léphet balra (false = végtelen)
 urhajo['x'] = 0; // hajó pozíciója az x tengelyen
 urhajo['y'] = 0; // hajó pozíciója az y tengelyen
 urhajo['utkozesek'] = 0; // hajó ütközéseinek száma
@@ -61,10 +61,10 @@ jatek['ciklus_ido'] = 200; // mekkora legyen a ciklusok közt a késleltetés alapb
 jatek['ciklus_azonosito'] = false; // a ciklus azonosítójának tárolója
 jatek['ciklus_szam'] = 0; // a ciklus számának tárolója
 jatek['max_ciklus'] = false; // maximum ciklusok száma a vége elõtt (false = végtelen)
-jatek['lepett_fel'] = 0; // az ûrhajó egy ciklusban hányat tud lépni felfelé
-jatek['lepett_le'] = 0; // az ûrhajó egy ciklusban hányat tud lépni lelfelé
-jatek['lepett_jobbra'] = 0; // az ûrhajó egy ciklusban hányat tud lépni jobbra
-jatek['lepett_balra'] = 0; // az ûrhajó egy ciklusban hányat tud lépni balra
+jatek['lepett_fel'] = 0; // az ûrhajó egy ciklusban lépett felfelé
+jatek['lepett_le'] = 0; // az ûrhajó egy ciklusban lépett lelfelé
+jatek['lepett_jobbra'] = 0; // az ûrhajó egy ciklusban lépett jobbra
+jatek['lepett_balra'] = 0; // az ûrhajó egy ciklusban lépett balra
 jatek['ciklussal_lepes'] = false; // az ûrhajó egy ciklusban csak egyet léphet összesen (true|false)
 jatek['lepett'] = false; // ûrhajó cikluson belüli lépésének számontartója
 
@@ -112,7 +112,7 @@ function gombnyomas(e)
   {
     urhajo_mozgatas(g); // nyílbillentyû esetén ûrhajó mozgatása
   }
-  else // egyéb esetben valószínûleg vlaamilyen beállítás
+  else // egyéb esetben valószínûleg valamilyen beállítás
   {
     jatek_beallitas(g);
   }
@@ -303,7 +303,7 @@ function jatekmezo_kiirasa()
         }
         else
         {
-          if(typeof(jatekmezo[i][j]) == 'undefined' || jatekmezo[i][j] === null) // ha nincs az adott mezõ beállítva
+          if(typeof(jatekmezo[i][j]) == 'undefined' || jatekmezo[i][j] === null || jatekmezo[i][j] == '') // ha nincs az adott mezõ beállítva
           {
             jatekmezo[i][j] = 0; // feltöltés üres mezõvel
           }
