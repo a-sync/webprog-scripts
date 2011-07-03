@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>porgettyu</title>
+<style type="text/css">
+<!--
+
+html, body {
+margin: 0;
+padding: 0;
+text-align: center;
+background-image: url("hatter2.jpg");
+background-repeat: repeat;
+background-position: center center;
+min-height: 100vh;
+}
+
+#container {
+width: auto;
+height: 1000px;
+margin: 0 auto;
+padding: 0;
+background-repeat: no-repeat;
+background-position: top left;
+text-align: left;
+}
+
+
+
+-->
+</style>
+<script type="text/javascript">
+
+var c = -1;
+var cursors = new Array('n-resize', 'ne-resize', 'e-resize', 'se-resize', 's-resize', 'sw-resize', 'w-resize', 'nw-resize');
+function cursorcontrol(e)
+{
+  var o;
+  if (e) o = e.currentTarget || e.srcElement;
+  if(!o) o = document.body;
+  
+  c = switcher(c);
+  
+  if(c < 0) c = cursors.length-1;
+  else if(c >= (cursors.length)) c = 0;
+  
+  o.style.cursor = cursors[c];
+}
+
+var right = true;
+function switcher(a)
+{
+  if(isNaN(a))
+  {
+    right = (right) ? false : true;
+  }
+  else if(right) return ++a;
+  else return --a;
+}
+
+</script>
+</head>
+<body onclick="switcher(event)" onload="setInterval(cursorcontrol, 50)">
+
+<div id="container">
+
+</div><!--/container-->
+
+</body>
+</html>
