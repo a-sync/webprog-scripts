@@ -1,16 +1,17 @@
-<html>
-<head>
 <?php
- $icon = 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAOFJREFUOE+Nkj0OgzAMhY2EBBJX6cTI0oGJi/RGVa6QpWeBy7CWfqnBGCioVhSC/Z7/5e1kHMcQQtM0LxFu3mg8YJom4Z8PMgxD13VlWWZZBoGbNxr0ClDkTIgxVlUlX3mIQOBWQY91Q+j7viiKBZDQekywgpkjkGXb3s2m7vVYEKxgQKaUQnga4voBMhHq+mZ5nxE0FMhEyPP8mL1nmhXkGuGM4ypfIpDZz4qPdc81+C55kLVL3a1dors6h13vFafKzRx0HMzST8qnjn4/6eMuQbjaJdtH21Y6eLqt6v5/+QBK/0wfdN/R3QAAAABJRU5ErkJggg==';
- print '<link rel="shortcut icon" type="image/png" href="data:image/png;base64,'.$icon.'">';
- print '<link rel="icon" type="image/png" href="data:image/png;base64,'.$icon.'">';
-?>
-<title>Base64 kÛdol·s/dekÛdol·s</title>
+error_reporting(E_ALL);
+#ini_set('display_errors', 1);
+
+?><html>
+<head>
+<link rel="shortcut icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAOFJREFUOE+Nkj0OgzAMhY2EBBJX6cTI0oGJi/RGVa6QpWeBy7CWfqnBGCioVhSC/Z7/5e1kHMcQQtM0LxFu3mg8YJom4Z8PMgxD13VlWWZZBoGbNxr0ClDkTIgxVlUlX3mIQOBWQY91Q+j7viiKBZDQekywgpkjkGXb3s2m7vVYEKxgQKaUQnga4voBMhHq+mZ5nxE0FMhEyPP8mL1nmhXkGuGM4ypfIpDZz4qPdc81+C55kLVL3a1dors6h13vFafKzRx0HMzST8qnjn4/6eMuQbjaJdtH21Y6eLqt6v5/+QBK/0wfdN/R3QAAAABJRU5ErkJggg==">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAOFJREFUOE+Nkj0OgzAMhY2EBBJX6cTI0oGJi/RGVa6QpWeBy7CWfqnBGCioVhSC/Z7/5e1kHMcQQtM0LxFu3mg8YJom4Z8PMgxD13VlWWZZBoGbNxr0ClDkTIgxVlUlX3mIQOBWQY91Q+j7viiKBZDQekywgpkjkGXb3s2m7vVYEKxgQKaUQnga4voBMhHq+mZ5nxE0FMhEyPP8mL1nmhXkGuGM4ypfIpDZz4qPdc81+C55kLVL3a1dors6h13vFafKzRx0HMzST8qnjn4/6eMuQbjaJdtH21Y6eLqt6v5/+QBK/0wfdN/R3QAAAABJRU5ErkJggg==">
+<title>Base64 k√≥dol√°s/dek√≥dol√°s</title>
 <meta name="description" content="Vector Akashi's Base64 encoder/decoder">
 <meta name="generator" content="Notepad2">
 <meta name="author" content="Vector Akashi">
 <meta name="copyright" content="Vector Akashi 2006">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-2">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">
 <!--
 body,td,th {
@@ -43,13 +44,13 @@ a:active {
 <?php
  if (!isset($_POST['send'])){
 ?>
-<h1 align="center">Base64 kÛdol·s/dekÛdol·s</h1>
+<h1 align="center">Base64 k√≥dol√°s/dek√≥dol√°s</h1>
 <form action="<?php echo $_SERVER['PHP_SELF'];?>" method="post" enctype="multipart/form-data">
 <table border="0" align="center">
 <tr>
-<td valign="top" align="right"><b><font color="#ffffff">Szˆveg:<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>F·jl:</font></b></td><td>
+<td valign="top" align="right"><b><font color="#ffffff">Sz√∂veg:<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>+<br>F√°jl:</font></b></td><td>
 <textarea name="message" rows="16" cols="64"></textarea><br>
-<input type="file" name="datafile" size="14"><b><font color="#ffffff"> SortˆrÈs <input type="text" name="wrap" value="0" size="1"> karakternÈl&nbsp;||&nbsp;AlternatÌv feltˆltÈs:<input type="checkbox" name="method" value="safe"></font></b>
+<input type="file" name="datafile" size="47"><font color="#ffffff"><b>Alternat√≠v felt√∂lt√©s:</b></font><input type="checkbox" name="method" value="safe">
 </td>
 </tr>
 <tr>
@@ -59,23 +60,22 @@ a:active {
 </table>
 </form>
 <div align="center"><br>
-<span class="style3">(C) <a href="mailto:vector @ uw . hu">Vector Akashi</a> - I Know My Rights...</span><br><br>
+<span class="style3">(C) <a href="mailto:vector @ uw . hu">Vector</a></span><br><br>
 <a href="http://hungarian-83529822795.spampoison.com"><img src="http://pics3.inxhost.com/images/sticker.gif" border="0" width="80" height="15"/></a>
 </div>
-<? 
+<?php
  }else{
 	if (!$_POST['message'] && !$_FILES['datafile']['tmp_name']){
-		echo "<b>HIBA:</b> Nem adt·l meg adatot.<br><a href=JavaScript:window.history.back()><b>Vissza</b></a>";
+		echo "<b>HIBA:</b> Nem adt√°l meg adatot.<br><a href=JavaScript:window.history.back()><b>Vissza</b></a>";
 		return;
 	}
 	if ($_POST['message']){
 		$text = $_POST['message'];
-	}
-	else{ //ha nincs szˆveg megadva, haszn·ljuk a megadott f·jlt
+	}else{ //ha nincs sz√∂veg megadva, haszn√°ljuk a megadott f√°jlt
 		if ($_POST['method']=='safe'){
-			move_uploaded_file($_FILES['datafile']['tmp_name'], 'b64file');
+			move_uploaded_file($_FILES['datafile']['tmp_name'], 'b64file.tmp');
 			//php 5.x.x
-			$text = file_get_contents('b64file');
+			$text = file_get_contents('b64file.tmp');
 /*			//php 4.x.x
 			$filename = 'b64file';
 			$handle = fopen($filename, 'rb');
@@ -94,34 +94,28 @@ a:active {
 		}
 	}
 
-	//kÛdoljuk/dekÛdoljuk a kapott adatokat
+	//k√≥doljuk/dek√≥doljuk a kapott adatokat
 	$encoded = base64_encode($text);
 	$decoded = base64_decode($text);
 
-	//tˆrj¸k meg a sorokat adott karakternÈl ha kell
-	if($_POST['wrap'] > 0){
-		$encoded = wordwrap($encoded, $_POST['wrap'], "\n", 1);
-		//$decoded = wordwrap($decoded, $_POST['wrap'], "\n", 1);
-	}
-
-	//Ìrjuk bele f·jlba a kÛdolt/dekÛdolt adatokat
-	$file1 = fopen('encoded.txt', 'w'); //w=mindig csak egy kÛd van a f·jlban, a=a kovetkezo kÛdot az elızı ut·n rakja
+	//√≠rjuk bele f√°jlba a k√≥dolt/dek√≥dolt adatokat
+	$file1 = fopen('encoded.txt', 'w'); //w=mindig csak egy k√≥d van a f√°jlban, a=a kovetkezo k√≥dot az el≈ëz≈ë ut√°n rakja
 	fwrite($file1,$encoded);
 	fclose($file1);
-	$file2 = fopen('decoded.txt', 'w'); //w=mindig csak egy kÛd van a f·jlban, a=a kovetkezo kÛdot az elızı ut·n rakja
+	$file2 = fopen('decoded.txt', 'w'); //w=mindig csak egy k√≥d van a f√°jlban, a=a kovetkezo k√≥dot az el≈ëz≈ë ut√°n rakja
 	fwrite($file2,$decoded);
 	fclose($file2);
 
-	//Ìrjuk ki textarea segÌtsÈgÈvel a kÛdolt/dekÛdolt adatokat
-	echo '<h2>KÛdolva</h2><pre><textarea rows=15 cols=75 readonly>';
+	//√≠rjuk ki textarea seg√≠ts√©g√©vel a k√≥dolt/dek√≥dolt adatokat
+	echo "<h2>K√≥dolva</h2><pre><textarea rows=8 cols=64 readonly>";
 	print $encoded;
-	echo '</textarea></pre>*<a href=encoded.txt>encoded.txt</a>&nbsp;&nbsp;<font color=#ffffff><i>('.filesize('encoded.txt').'&nbsp;bytes)</i></font><br><br><hr>
-		<h2>DekÛdolva</h2><pre><textarea rows=15 cols=75 readonly>';
+	echo "</textarea></pre>*<a href=encoded.txt>encoded.txt</a>&nbsp;&nbsp;<font color=#ffffff><i>(".filesize('encoded.txt')."&nbsp;bytes)</i></font><br><br><hr>
+		<h2>Dek√≥dolva</h2><pre><textarea rows=8 cols=64 readonly>";
 	print $decoded;
-	echo '</textarea></pre>*<a href=decoded.txt>decoded.txt</a>&nbsp;&nbsp;<font color=#ffffff><i>('.filesize('decoded.txt').'&nbsp;bytes)</i></font><br><br><br><a href='.$_SERVER['PHP_SELF'].'><b>Vissza</b></a>';
+	echo "</textarea></pre>*<a href=decoded.txt>decoded.txt</a>&nbsp;&nbsp;<font color=#ffffff><i>(".filesize('decoded.txt')."&nbsp;bytes)</i></font><br><br><br><a href=".$_SERVER['PHP_SELF']."><b>Vissza</b></a>";
 
 	//debug
-//	print '<br><br><br><b>Debug:</b><br><br>Text:<br>'.$text.'<br><br>GIF:<img src="data:image/gif;base64,'.$text.'">&nbsp;&nbsp;PNG:<img src="data:image/png;base64,'.$text.'">&nbsp;&nbsp;ICON:<img src="data:image/x-icon;base64,'.$text.'">&nbsp;&nbsp;JPG:<img src="data:image/jpg;base64,'.$text.'">&nbsp;&nbsp;BMP:<img src="data:image/bmp;base64,'.$text.'"><br><br><b>Debug encoded:</b><br><br>GIF:<img src="data:image/gif;base64,'.$encoded.'">&nbsp;&nbsp;PNG:<img src="data:image/png;base64,'.$encoded.'">&nbsp;&nbsp;ICON:<img src="data:image/x-icon;base64,'.$encoded.'">&nbsp;&nbsp;JPG:<img src="data:image/jpg;base64,'.$encoded.'">&nbsp;&nbsp;BMP:<img src="data:image/bmp;base64,'.$encoded.'"><br><br><b>Debug coded:</b><br><br>GIF:<img src="data:image/gif;base64,'.$coded.'">&nbsp;&nbsp;PNG:<img src="data:image/png;base64,'.$coded.'">&nbsp;&nbsp;ICON:<img src="data:image/x-icon;base64,'.$coded.'">&nbsp;&nbsp;JPG:<img src="data:image/jpg;base64,'.$coded.'">&nbsp;&nbsp;BMP:<img src="data:image/bmp;base64,'.$coded.'">';
+//	print "<br><br><br><b>Debug:</b><br><br>Text:<br>".$text."<br><br>GIF:<img src='data:image/gif;base64,".$text."'>&nbsp;&nbsp;PNG:<img src='data:image/png;base64,".$text."'>&nbsp;&nbsp;ICON:<img src='data:image/x-icon;base64,".$text."'>&nbsp;&nbsp;JPG:<img src='data:image/jpg;base64,".$text."'>&nbsp;&nbsp;BMP:<img src='data:image/bmp;base64,".$text."'><br><br><b>Debug encoded:</b><br><br>GIF:<img src='data:image/gif;base64,".$encoded."'>&nbsp;&nbsp;PNG:<img src='data:image/png;base64,".$encoded."'>&nbsp;&nbsp;ICON:<img src='data:image/x-icon;base64,".$encoded."'>&nbsp;&nbsp;JPG:<img src='data:image/jpg;base64,".$encoded."'>&nbsp;&nbsp;BMP:<img src='data:image/bmp;base64,".$encoded."'><br><br><b>Debug coded:</b><br><br>GIF:<img src='data:image/gif;base64,".$coded."'>&nbsp;&nbsp;PNG:<img src='data:image/png;base64,".$coded."'>&nbsp;&nbsp;ICON:<img src='data:image/x-icon;base64,".$coded."'>&nbsp;&nbsp;JPG:<img src='data:image/jpg;base64,".$coded."'>&nbsp;&nbsp;BMP:<img src='data:image/bmp;base64,".$coded."'>";
  }
 ?>
 </body>
