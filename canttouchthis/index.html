@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="UTF-8" />
+    <title>TECH DEMO</title>
+    <style type="text/css" rel="stylesheet">
+    html, body
+    {
+                background-image: linear-gradient(rgba(255,255,255,1), rgba(240,240,240,0.7));
+                height: 100%;
+                overflow: hidden;
+    }
+    h1 {
+                text-align: center;
+                text-shadow: 2px 2px 1px rgba(0,0,0,0.2);
+    }
+    </style>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    
+    <script src="https://unpkg.com/jAlert@4.9.1/dist/jAlert.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/jAlert@4.9.1/dist/jAlert.css" />
+
+<script type="text/javascript">
+$(function() {
+        
+        $.fn.jAlert.defaults.id = 'alertdiv';
+        $.fn.jAlert.defaults.type = 'confirm';
+        //$.fn.jAlert.defaults.size = 'xsm';
+        $.fn.jAlert.defaults.theme = 'red';
+        $.fn.jAlert.defaults.backgroundColor = 'white';
+        $.fn.jAlert.defaults.confirmQuestion = 'Biztosan törli?';
+        $.fn.jAlert.defaults.confirmBtnText = 'Igen';
+        $.fn.jAlert.defaults.denyBtnText = 'Nem';
+        $.fn.jAlert.defaults.closeOnEsc = false;
+        $.fn.jAlert.defaults.closeBtn = false;
+        $.fn.jAlert.defaults.replaceOtherAlerts = true;
+        $.fn.jAlert.defaults.showAnimation = 'bounceInDown';
+        $.fn.jAlert.defaults.hideAnimation = 'rotateOut';
+        $.fn.jAlert.defaults.confirmAutofocus = '.denyBtn';
+        
+        $.fn.jAlert.defaults.onOpen = dummy;
+        $.jAlert('attach');
+        
+        function dummy() {
+        var inMotion = false;
+        $('#alertdiv').css({position:'relative'}).off().on('mouseenter mousemove', function(e){
+                if(inMotion) return false;
+                inMotion = true;
+
+                var offset = $(this).offset();
+                offset.right = offset.left + $(this).width();
+                offset.bottom = offset.top + $(this).height();
+                offset.inLeftArea = (offset.left + ($(this).width()*0.5) < $(window).width()*0.5);
+                offset.inTopArea  = (offset.top + ($(this).height()*0.5) < $(window).height()*0.5);
+
+                var axis_x = Math.floor(Math.random() * ($(this).width()*0.4) + $(this).width()*0.5);
+                var axis_y = Math.floor(Math.random() * ($(this).height()*0.4) + $(this).height()*0.5);
+                
+                var off_x = e.originalEvent.layerX || e.offsetX;
+                var off_y = e.originalEvent.layerY || e.offsetY;
+                
+                console.log($(window).width(), $(window).height());
+                console.log(offset);
+                console.log(axis_x, axis_y);
+                console.log(off_x, off_y);
+                
+                var anims = {
+                        goright: {left: '+='+axis_x, top:  (offset.inTopArea ?'+':'-')+'='+(axis_y)},
+                        goleft:  {left: '-='+axis_x, top:  (offset.inTopArea ?'+':'-')+'='+(axis_y)},
+                        godown:  {top:  '+='+axis_y, left: (offset.inLeftArea?'+':'-')+'='+(axis_x)},
+                        goup:    {top:  '-='+axis_y, left: (offset.inLeftArea?'+':'-')+'='+(axis_x)}
+                };
+
+                var anim = anims.goright;
+                switch(closestEdge(off_x, off_y, $(this).width(), $(this).height())) {
+                        case 'left':
+                                if(offset.left + axis_x*1.1 > $(window).width()) anim = anims.goleft;
+                                else anim = anims.goright;
+                        break;
+                        case 'right':
+                                if(offset.right - axis_x*1.1 < 0) anim = anims.goright;
+                                else anim = anims.goleft;
+                        break;
+                        case 'top':
+                                if(offset.top + axis_y*1.1 > $(window).height()) anim = anims.goup;
+                                else anim = anims.godown;
+                        break;
+                        case 'bottom':
+                                if(offset.bottom - axis_y*1.1 < 0) anim = anims.godown;
+                                else anim = anims.goup;
+                        break;
+                }
+
+                $(this).animate(anim, (axis_x+axis_y)*0.42, 'swing', function() {
+                        inMotion = false;
+                });
+                
+                // Pass object offsetX,offsetY,width,height
+                function closestEdge(distLeft,distTop,w,h){
+                    var distBottom = (h - distTop);
+                    var distRight = (w - distLeft);
+                    var min = Math.min(distTop, distBottom, distLeft, distRight);
+                    switch (min) {
+                        case distLeft:
+                            return "left";
+                        case distRight:
+                            return "right";
+                        case distTop:
+                            return "top";
+                        case distBottom:
+                            return "bottom";
+                    }
+                }
+        });
+        }
+});
+</script>
+    </head>
+    <body>
+                <h1>Admin felhasználó törlése. Megerősítő ablak TECH DEMO <small>v2.0 build 00003</small></h1>
+                <div style="margin: 5px auto; width: 400px">
+                <input data-jAlert type="button" style="color:red;vertical-align:baseline" value="Törlés!"/>
+                &nbsp; Kovács Eleonóra</div>
+                <div style="margin: 5px auto; width: 400px">
+                <input data-jAlert type="button" style="color:red;vertical-align:baseline" value="Törlés!"/>
+                &nbsp; Porzó Gál</div>
+    </body>
+</html>
